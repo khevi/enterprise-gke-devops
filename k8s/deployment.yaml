@@ -3,7 +3,12 @@ kind: Deployment
 metadata:
   name: enterprise-gke-app
 spec:
-  replicas: 2
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: enterprise-gke-app
@@ -17,6 +22,16 @@ spec:
         image: us-east1-docker.pkg.dev/enterprise-gke-devops/gke-dev-repo/enterprise-gke-app:1.0
         ports:
         - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: enterprise-gke-config
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "250m"
+            memory: "256Mi"
         readinessProbe:
           httpGet:
             path: /health
