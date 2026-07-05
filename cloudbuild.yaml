@@ -1,0 +1,26 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-east1-docker.pkg.dev/$PROJECT_ID/gke-dev-repo/enterprise-gke-app:$SHORT_SHA'
+      - './app'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-east1-docker.pkg.dev/$PROJECT_ID/gke-dev-repo/enterprise-gke-app:$SHORT_SHA'
+
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/enterprise-gke-app'
+      - 'enterprise-gke-app=us-east1-docker.pkg.dev/$PROJECT_ID/gke-dev-repo/enterprise-gke-app:$SHORT_SHA'
+      - '--namespace=default'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=gke-dev-cluster'
+
+images:
+  - 'us-east1-docker.pkg.dev/$PROJECT_ID/gke-dev-repo/enterprise-gke-app:$SHORT_SHA'
