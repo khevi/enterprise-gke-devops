@@ -4,6 +4,7 @@ metadata:
   name: enterprise-gke-app
 spec:
   replicas: 1
+  
   strategy:
     type: RollingUpdate
     rollingUpdate:
