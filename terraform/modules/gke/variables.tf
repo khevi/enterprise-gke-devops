@@ -1,0 +1,10 @@
+variable "cluster_name" {}
+variable "zone" {}
+variable "network" {}
+variable "subnetwork" {}
+variable "pods_range_name" {}
+variable "services_range_name" {}
+variable "node_pool_name" {}
+variable "node_count" {}
+variable "machine_type" {}
+variable "disk_size_gb" {}

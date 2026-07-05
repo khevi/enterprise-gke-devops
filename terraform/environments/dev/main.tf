@@ -26,3 +26,19 @@ module "network" {
   services_range_name = "gke-services-range"
   services_cidr       = "10.30.0.0/20"
 }
+
+module "gke" {
+  source = "../../modules/gke"
+
+  cluster_name        = "gke-dev-cluster"
+  zone                = "us-east1-b"
+  network             = module.network.vpc_id
+  subnetwork          = module.network.subnet_id
+  pods_range_name     = module.network.pods_range_name
+  services_range_name = module.network.services_range_name
+
+  node_pool_name = "gke-dev-node-pool"
+  node_count     = 1
+  machine_type   = "e2-small"
+  disk_size_gb   = 30
+}
