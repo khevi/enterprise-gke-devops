@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enterprise-gke-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: enterprise-gke-app
+  template:
+    metadata:
+      labels:
+        app: enterprise-gke-app
+    spec:
+      containers:
+      - name: enterprise-gke-app
+        image: us-east1-docker.pkg.dev/enterprise-gke-devops/gke-dev-repo/enterprise-gke-app:1.0
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
