@@ -11,7 +11,7 @@ def home():
         environment="development",
         platform="Google Kubernetes Engine",
         hostname=socket.gethostname(),
-        status="running"
+        status="running-via-cicd"
     )
 
 
